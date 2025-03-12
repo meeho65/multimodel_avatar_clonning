@@ -1,13 +1,17 @@
 from fastapi import FastAPI, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-
 import backend.models as models
-from database import engine, get_db
-from auth import signup, login, UserCreate, Token
+from backend.database import engine, get_db
+from backend.auth import signup, login
+from backend.schemas import UserCreate, Token
+from fastapi.staticfiles import StaticFiles  # ✅ Import StaticFiles
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Serve frontend files from the "frontend" directory
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 # Create database tables
 models.Base.metadata.create_all(bind=engine)
