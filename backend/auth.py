@@ -3,9 +3,8 @@ from passlib.context import CryptContext
 from datetime import timedelta, datetime
 import jwt
 
-from backend.database import get_db
-import backend.models as models
-from backend.schemas import UserCreate
+from database import get_db
+import models as models
 
 SECRET_KEY = "91577a3087e091f4d58e2a2c483f8b78b5e028de82fe6c4318a126d60978199d"  # Change this
 ALGORITHM = "HS256"
