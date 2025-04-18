@@ -1,0 +1,4 @@
+replicate
+sqlalchemy
+fastapi
+uvicorn
