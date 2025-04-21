@@ -1,10 +1,6 @@
-import os
-import asyncio
 import replicate
 import traceback
 import fal_client
-import subprocess
-from fastapi import s
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import engine, Base, get_db
