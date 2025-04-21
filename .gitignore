@@ -1,4 +1,5 @@
 venv/
+backend/__pycache__/
 backend-2/tests/
 backend-2/Data/
 backend-2/video_gen/checkpoints/
