@@ -4,6 +4,7 @@ import replicate
 import traceback
 import fal_client
 import subprocess
+from fastapi import s
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import engine, Base, get_db
@@ -25,24 +26,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# ------------- Utility --------------------
-
-async def subscribe(src_img,src_audio):
-    handler = await fal_client.submit_async(
-        "fal-ai/sadtalker",
-        arguments={
-            "source_image_url": src_img,
-            "driven_audio_url": src_audio
-        },
-    )
-
-    async for event in handler.iter_events(with_logs=True):
-        if hasattr(event, 'progress'):
-            print(f"Progress: {event.progress * 100:.1f}%")
-
-    result = await handler.get()
-    print(result)
 
 
 # ------------- Pydantic Models -------------
@@ -140,12 +123,12 @@ async def video_gen(
 		src_img = fal_client.upload_file("src_img.jpg")
 
 		handler = await fal_client.submit_async(
-        "fal-ai/sadtalker",
-        arguments={
-            "source_image_url": src_img,
-            "driven_audio_url": src_audio
-        },
-    )
+        		"fal-ai/sadtalker",
+        		arguments={
+        		    "source_image_url": src_img,
+        		    "driven_audio_url": src_audio
+        		},
+    	)
 
 		async for event in handler.iter_events(with_logs=True):
 			if hasattr(event, 'progress'):
