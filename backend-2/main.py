@@ -1,14 +1,14 @@
 from fastapi.security import OAuth2PasswordRequestForm
-#from sqlalchemy.orm import Session
-#from database import get_db, Base, engine
-#from schemas import UserCreate, Token
-#from auth import signup, login
+from sqlalchemy.orm import Session
+from database import get_db, Base, engine
+from schemas import UserCreate, Token
+from auth import signup, login
 from fastapi import FastAPI, Depends, UploadFile, Form
 from pydantic import BaseModel
 import subprocess
 
 app = FastAPI()
-#Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 class ttsForm(BaseModel):
     text: str
@@ -19,13 +19,13 @@ class videogenForm(BaseModel):
     img: UploadFile
 
 
-# @app.post("/signup")
-# def register_user(user: UserCreate, db: Session = Depends(get_db)):
-#     return signup(user, db)
+@app.post("/signup")
+def register_user(user: UserCreate, db: Session = Depends(get_db)):
+    return signup(user, db)
 
-# @app.post("/login", response_model=Token)
-# def user_login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-#     return login(form_data, db)
+@app.post("/login", response_model=Token)
+def user_login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    return login(form_data, db)
 
 @app.post("/text_to_speech")
 async def text_to_speech(form_data: ttsForm = Form()):

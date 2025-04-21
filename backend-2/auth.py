@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException,Form
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
 import jwt
@@ -6,7 +6,7 @@ import jwt
 from database import get_db
 import models as models
 
-SECRET_KEY = "91577a3087e091f4d58e2a2c483f8b78b5e028de82fe6c4318a126d60978199d"  # Change this
+SECRET_KEY = "91577a3087e091f4d58e2a2c483f8b78b5e028de82fe6c4318a126d60978199d"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
