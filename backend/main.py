@@ -1,7 +1,9 @@
 import os
-import httpx
+import asyncio
 import replicate
 import traceback
+import fal_client
+import subprocess
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from database import engine, Base, get_db
@@ -23,6 +25,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ------------- Utility --------------------
+
+async def subscribe(src_img,src_audio):
+    handler = await fal_client.submit_async(
+        "fal-ai/sadtalker",
+        arguments={
+            "source_image_url": src_img,
+            "driven_audio_url": src_audio
+        },
+    )
+
+    async for event in handler.iter_events(with_logs=True):
+        if hasattr(event, 'progress'):
+            print(f"Progress: {event.progress * 100:.1f}%")
+
+    result = await handler.get()
+    print(result)
+
 
 # ------------- Pydantic Models -------------
 class ttsForm(BaseModel):
@@ -115,33 +136,27 @@ async def video_gen(
 			imgData = await formData.img.read()
 			file.write(imgData)
               
-		driven_audio = open("src_audio.wav", 'rb')
-		src_img = open("src_img.jpg", 'rb')
+		src_audio = fal_client.upload_file("src_audio.wav")
+		src_img = fal_client.upload_file("src_img.jpg")
 
-		input = {
-    	    "facerender": "facevid2vid",
-    	    "pose_style": 0,
-    	    "preprocess": "crop",
-    	    "still_mode": True,
-    	    "driven_audio": driven_audio,
-    	    "source_image": src_img,
-    	    "use_enhancer": True,
-    	    "size_of_image": 256,
-    	    "expression_scale": 1
-    	}
+		handler = await fal_client.submit_async(
+        "fal-ai/sadtalker",
+        arguments={
+            "source_image_url": src_img,
+            "driven_audio_url": src_audio
+        },
+    )
 
-		output = replicate.run(
-    	    "cjwbw/sadtalker:a519cc0cfebaaeade068b23899165a11ec76aaa1d2b313d40d214f204ec957a3",
-    	    input=input
-    	)
+		async for event in handler.iter_events(with_logs=True):
+			if hasattr(event, 'progress'):
+				print(f"Progress: {event.progress * 100:.1f}%")
 
-		with open("output.mp4", "wb") as file:
-			file.write(output.read())
-
-		return JSONResponse(content={"message": "Video generated at output.mp4"})
+		result = await handler.get()
+		
+		return JSONResponse(content={"message": f"Video generated at {result['video']['url']}"})
 	
 	except HTTPException as e:
 		raise e  # Let FastAPI handle known auth errors
 	except Exception as e:
 		print("[TTS Error]", traceback.format_exc())
-		raise HTTPException(status_code=500, detail="TTS generation failed")
+		raise HTTPException(status_code=500, detail="Video generation failed")
