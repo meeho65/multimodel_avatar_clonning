@@ -5,8 +5,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 USERNAME = os.environ['DB_USERNAME']
 PASSWORD = os.environ['DB_PASSWORD']
-DB_NAME = "avatar_fyp_db"
-HOST = '172.20.208.1'
+DB_NAME = "db_avatar_fyp"
+HOST = 'db-avatar-fyp.cz04i22gicie.eu-north-1.rds.amazonaws.com'
 PORT = "3306"
 
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST}/{DB_NAME}"
