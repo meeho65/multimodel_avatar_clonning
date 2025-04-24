@@ -1,0 +1,121 @@
+/* src/Theme.css OR src/ChatPage.css */
+
+/* Main Layout Container */
+.chat-page-layout {
+    display: flex;
+    gap: 1.5rem; /* Space between sidebar and main content */
+    height: calc(100vh - 150px); /* Example: Adjust based on navbar/footer height */
+    min-height: 500px; /* Ensure a minimum usable height */
+  }
+  
+  /* Avatar Sidebar Styling */
+  .avatar-sidebar {
+    flex: 0 0 280px; /* Fixed width, don't grow or shrink */
+    border-right: 1px solid var(--bs-border-color); /* Separator line */
+    padding-right: 1rem; /* Space before the line */
+    overflow-y: auto; /* Allow scrolling if list is long */
+    display: flex;
+    flex-direction: column;
+  }
+  .avatar-sidebar h5 {
+      margin-bottom: 0.75rem; /* Space below title */
+  }
+  
+  /* Avatar List Styling */
+  .avatar-list {
+      /* list-unstyled removes bullets/padding */
+      flex-grow: 1; /* Allow list to take remaining space */
+      overflow-y: auto; /* Scroll list independently if needed */
+  }
+  .avatar-list-item {
+      border: none; /* Remove default button border */
+      background: none; /* Remove default button background */
+      border-radius: 0.375rem; /* Standard Bootstrap border radius */
+      margin-bottom: 0.25rem; /* Space between items */
+      transition: background-color 0.15s ease-in-out;
+      color: var(--bs-body-color) !important; /* Ensure text color adapts */
+  }
+  .avatar-list-item:hover {
+      background-color: var(--bs-tertiary-bg); /* Use theme tertiary bg for hover */
+  }
+  .avatar-list-item.active {
+      background-color: var(--bs-primary-bg-subtle); /* Bootstrap subtle primary for active */
+      font-weight: 500;
+      color: var(--bs-primary) !important; /* Use primary color for active text */
+  }
+  .avatar-list-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%; /* Make preview circular */
+      object-fit: cover; /* Ensure image covers the area */
+      margin-right: 0.75rem; /* Space between image and name */
+      border: 1px solid var(--bs-border-color); /* Subtle border */
+  }
+  .avatar-list-item .avatar-placeholder-icon {
+       width: 40px;
+       height: 40px;
+       color: var(--bs-secondary-color); /* Muted color for placeholder */
+       margin-right: 0.75rem;
+       opacity: 0.6;
+  }
+  
+  
+  /* Main Content Area */
+  .chat-main-content {
+    flex-grow: 1; /* Take remaining width */
+    display: flex;
+    gap: 1.5rem; /* Space between video and chat columns */
+    overflow: hidden; /* Prevent content overflow */
+  }
+  
+  /* Video Column */
+  .chat-video-column {
+    flex: 1 1 60%; /* Flexible width, default 60% */
+    min-width: 300px; /* Prevent getting too small */
+    display: flex; /* Allow card to stretch */
+  }
+  .chat-video-column .card {
+      width: 100%; /* Ensure card takes full width */
+  }
+  .chat-video-column video {
+      max-width: 100%; /* Ensure video doesn't overflow */
+  }
+  
+  /* Chat Column */
+  .chat-column {
+    flex: 1 1 40%; /* Flexible width, default 40% */
+    min-width: 280px; /* Prevent getting too small */
+    display: flex; /* Allow card to stretch */
+  }
+  .chat-column .card {
+      width: 100%; /* Ensure card takes full width */
+  }
+  
+  
+  /* Responsive adjustments (Example for medium screens and below) */
+  @media (max-width: 991.98px) {
+    .chat-page-layout {
+      flex-direction: column; /* Stack sidebar and main content */
+      height: auto; /* Auto height on smaller screens */
+    }
+    .avatar-sidebar {
+       flex: 0 0 auto; /* Don't fix height/width */
+       border-right: none;
+       border-bottom: 1px solid var(--bs-border-color); /* Separator below */
+       padding-right: 0;
+       padding-bottom: 1rem;
+       max-height: 250px; /* Limit height when stacked */
+    }
+    .chat-main-content {
+        flex-direction: column; /* Stack video and chat */
+        overflow: visible;
+    }
+    .chat-video-column, .chat-column {
+        min-width: 100%;
+        flex-basis: auto; /* Reset flex basis */
+    }
+    .chat-column .card {
+        /* Adjust height or let it be content-based */
+        min-height: 400px;
+    }
+  }
