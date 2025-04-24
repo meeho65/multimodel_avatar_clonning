@@ -10,3 +10,4 @@ backend-2/video_gen/src/audio2pose_models/__pycache__/
 backend-2/video_gen/src/face3d/__pycache__/
 backend-2/video_gen/src/facerender/__pycache__/
 backend-2/video_gen/src/utils/__pycache__/
+env/
