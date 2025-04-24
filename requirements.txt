@@ -1,0 +1,9 @@
+replicate
+sqlalchemy
+pymysql
+fastapi
+uvicorn
+jose
+passlib[bcrypt]
+python-jose[cryptography]
+fal-client
