@@ -1,3 +1,5 @@
+import os
+import boto3
 import replicate
 import traceback
 import fal_client
@@ -13,6 +15,7 @@ from fastapi import FastAPI, UploadFile, Depends, HTTPException, status, Form
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
+s3 = boto3.client('s3')
 
 # Optional: Add CORS if calling from frontend
 app.add_middleware(
@@ -25,13 +28,11 @@ app.add_middleware(
 
 
 # ------------- Pydantic Models -------------
-class ttsForm(BaseModel):
-    audio: UploadFile
-    text: str
 
 class videogenForm(BaseModel):
-    img: UploadFile
-    audio: UploadFile
+	text: str 
+	avatar_name: str
+	audio: UploadFile
 
 class UserCreate(BaseModel):
 	username: str
@@ -66,19 +67,11 @@ def user_login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
         )
 
 # ------------- Protected Endpoints -------------
-@app.post("/tts")
-async def tts(
-    formData: ttsForm = Form(), 
-    current_user=Depends(get_current_user)  # Ensures user is logged in
+def tts(
+    audio, text 
 ):
 	try:
-		text = formData.text
-
-		with open("src_audio.wav", 'wb') as file:
-			audioData = await formData.audio.read()
-			file.write(audioData)
-
-		speaker = open("src_audio.wav", "rb")
+		speaker = open(audio, "rb")
 		input = {
     	    "text": text,
     	    "speaker": speaker
@@ -92,13 +85,10 @@ async def tts(
 		with open("output.wav", "wb") as file:
 			file.write(output.read())
 
-		return JSONResponse(content={"message": "Audio generated at output.wav"})
+		return True
 	
-	except HTTPException as e:
-		raise e 
-	except Exception as e:
-		print("[TTS Error]", traceback.format_exc())
-		raise HTTPException(status_code=500, detail="TTS generation failed")
+	except:
+		return False
 
 
 @app.post("/video_gen")
@@ -106,23 +96,33 @@ async def video_gen(
     formData: videogenForm = Form(), 
     current_user=Depends(get_current_user)  # Ensures user is logged in
 ):
-	try:
+	try:		
+		user = current_user.username
+		avatar = formData.avatar_name
+
+		#print(user,avatar)
+
+		s3.download_file(os.environ['BUCKET_NAME'], 'Users'+'/'+user+'/'+avatar+'.jpg', f'{avatar}.jpg')
+
 		with open("src_audio.wav", 'wb') as file:
 			audioData = await formData.audio.read()
 			file.write(audioData)
+		
+		result_audio = tts('src_audio.wav', formData.text) 
 
-		with open("src_img.jpg", 'wb') as file:
-			imgData = await formData.img.read()
-			file.write(imgData)
+		if not result_audio:
+			return JSONResponse(content={"message":"Unable to clone Audio."})
               
-		src_audio = fal_client.upload_file("src_audio.wav")
-		src_img = fal_client.upload_file("src_img.jpg")
+		src_audio = fal_client.upload_file("output.wav")
+		src_img = fal_client.upload_file(f"{avatar}.jpg")
 
 		handler = await fal_client.submit_async(
         		"fal-ai/sadtalker",
         		arguments={
         		    "source_image_url": src_img,
-        		    "driven_audio_url": src_audio
+        		    "driven_audio_url": src_audio,
+					"preprocess": "full",
+					"still_mode": True
         		},
     	)
 
