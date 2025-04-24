@@ -1,0 +1,177 @@
+/* src/Theme.css */
+
+/* Light Theme Defaults / Global Variables */
+:root {
+  --custom-primary-color: #6c5ce7;
+  --custom-navbar-color: #ffffff;
+
+  /* Bootstrap variable overrides for light mode */
+  --bs-primary: var(--custom-primary-color);
+  --bs-secondary: #6c757d; /* Standard Bootstrap secondary */
+  --bs-light: #f8f9fa;   /* Standard Bootstrap light */
+  --bs-dark: #212529;    /* Standard Bootstrap dark */
+  --bs-link-color: var(--custom-primary-color);
+  --bs-link-hover-color: color-mix(in srgb, var(--custom-primary-color) 80%, black);
+
+  /* --- LIGHT MODE BODY/SURFACE STYLES --- */
+  --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #212529;       /* Dark text */
+  --bs-body-bg: #f8f9fa;           /* Light gray background */
+  --bs-tertiary-bg: #ffffff;       /* e.g., Card background */
+  --bs-secondary-color: rgba(33, 37, 41, 0.75); /* Muted text */
+  --bs-border-color: #dee2e6;
+  /* ------------------------------------ */
+
+  --custom-navbar-bg: var(--custom-primary-color);
+}
+
+/* Dark Theme Overrides */
+[data-bs-theme="dark"] {
+  /* Re-declare base color if needed */
+  --custom-primary-color: #6c5ce7;
+  --custom-navbar-color: #e9ecef; /* Light text for dark navbar */
+
+  /* Bootstrap variable overrides for dark mode */
+  --bs-primary: color-mix(in srgb, var(--custom-primary-color) 85%, white); /* Lighter primary */
+  --bs-secondary: #adb5bd; /* Lighter secondary */
+  --bs-light: #343a40;   /* Darker light */
+  --bs-dark: #dee2e6;    /* Lighter dark */
+  --bs-link-color: var(--bs-primary);
+  --bs-link-hover-color: color-mix(in srgb, var(--bs-primary) 80%, white);
+
+  /* --- DARK MODE BODY/SURFACE STYLES --- */
+  --bs-body-color: #dee2e6;       /* Light text */
+  --bs-body-bg: #212529;           /* Dark background */
+  --bs-tertiary-bg: #343a40;       /* Darker surface background */
+  --bs-secondary-color: rgba(222, 226, 230, 0.75); /* Lighter muted text */
+  --bs-border-color: #495057;
+  /* ----------------------------------- */
+
+  /* Component specific overrides */
+  --bs-card-bg: var(--bs-tertiary-bg);
+  --bs-card-color: var(--bs-body-color);
+  --bs-card-border-color: var(--bs-border-color);
+  --bs-modal-bg: var(--bs-tertiary-bg);
+  --bs-modal-color: var(--bs-body-color);
+  --bs-modal-header-border-color: var(--bs-border-color);
+  --bs-modal-footer-border-color: var(--bs-border-color);
+  --bs-form-control-bg: var(--bs-tertiary-bg);
+  --bs-form-control-color: var(--bs-body-color);
+  --bs-form-control-border-color: var(--bs-border-color);
+  --bs-form-select-bg: var(--bs-form-control-bg);
+  --bs-form-select-color: var(--bs-form-control-color);
+  --bs-form-select-border-color: var(--bs-form-control-border-color);
+
+
+  /* Navbar Specific Dark Theme Overrides */
+  --custom-navbar-bg: color-mix(in srgb, var(--custom-primary-color) 85%, black);
+
+  /* Dark Button Overrides */
+   --bs-btn-color: var(--custom-navbar-bg); /* Text color for btn-light */
+   --bs-btn-bg: var(--bs-dark); /* Use the lighter dark color for bg */
+   --bs-btn-border-color: var(--bs-dark);
+   --bs-btn-hover-color: var(--custom-navbar-bg);
+   --bs-btn-hover-bg: color-mix(in srgb, var(--bs-dark) 90%, black);
+   --bs-btn-hover-border-color: color-mix(in srgb, var(--bs-dark) 90%, black);
+
+   .card .bi-person-video3,
+   .card .bi-mic-fill,
+   .card .bi-camera-reels-fill {
+     fill: var(--custom-primary-color); /* Use the adjusted dark primary */
+   }
+
+   /* Ensure theme toggle button outline adapts */
+   .btn-theme-toggle {
+     border-color: var(--custom-navbar-color);
+     color: var(--custom-navbar-color);
+   }
+}
+
+/* --- Explicit Body Styling --- */
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  /* Apply other base body styles using variables */
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  /* Add transition for smooth theme change */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* --- End Explicit Body Styling --- */
+
+
+/* --- General Navbar Styling --- */
+.navbar.navbar-dark {
+  background-color: var(--custom-navbar-bg) !important; /* Keep !important for now */
+  transition: background-color 0.3s ease;
+}
+.navbar-dark .navbar-brand,
+.navbar-dark .nav-link {
+  color: var(--custom-navbar-color) !important;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+.navbar-dark .navbar-toggler {
+    color: rgba(255, 255, 255, 0.75);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.navbar-dark .navbar-toggler-icon {
+   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-dark .nav-link:hover,
+.navbar-dark .navbar-brand:hover {
+  opacity: 1;
+  color: var(--custom-navbar-color) !important;
+}
+.navbar-dark .nav-link.active {
+  font-weight: 600;
+  opacity: 1;
+  color: var(--custom-navbar-color) !important;
+}
+
+/* Style for the theme toggle button */
+.btn-theme-toggle {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  border-color: var(--custom-navbar-color);
+  color: var(--custom-navbar-color);
+  opacity: 0.9;
+  transition: opacity 0.2s ease, background-color 0.2s ease; /* Add transition */
+}
+.btn-theme-toggle:hover {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.btn-theme-toggle svg {
+   margin: auto;
+}
+
+/* Ensure card icons use the adaptable primary color */
+.card .bi-person-video3,
+.card .bi-mic-fill,
+.card .bi-camera-reels-fill {
+  fill: var(--custom-primary-color);
+}
+
+
+/* --- Animation Styles (Keep from animations.css or merge here) --- */
+.btn-animated {
+  transition: transform 0.2s ease-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  will-change: transform, background-color, box-shadow, border-color, color, opacity;
+}
+.btn-animated:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.btn-animated:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* ... other animation styles ... */
