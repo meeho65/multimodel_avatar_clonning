@@ -8,4 +8,5 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
     fine_tuned = Column(Boolean,nullable=False)
+    model_version_id = Column(String(255), nullable=True)
 

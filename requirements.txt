@@ -7,3 +7,6 @@ jose
 passlib[bcrypt]
 python-jose[cryptography]
 fal-client
+zipfile36==0.1.3
+celery==5.5.2
+redis==5.2.1
