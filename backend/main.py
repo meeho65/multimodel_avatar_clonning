@@ -77,7 +77,6 @@ def user_login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
         )
 
 # ------------- Protected Endpoints -------------
-
 @app.post('/avatar_gen')
 async def avatar_gen(
         formData: AvatargenForm = Form(),
