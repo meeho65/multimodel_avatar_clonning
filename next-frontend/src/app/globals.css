@@ -1,0 +1,610 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.btn {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  background-color: #5a4fcf; /* Darker shade for hover effect */
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Light Theme Defaults / Global Variables */
+:root {
+  --custom-primary-color: #6c5ce7;
+  --custom-navbar-color: #ffffff;
+
+  /* Bootstrap variable overrides for light mode */
+  --bs-primary: var(--custom-primary-color);
+  --bs-secondary: #6c757d; /* Standard Bootstrap secondary */
+  --bs-light: #f8f9fa; /* Standard Bootstrap light */
+  --bs-dark: #212529; /* Standard Bootstrap dark */
+  --bs-link-color: var(--custom-primary-color);
+  --bs-link-hover-color: color-mix(
+    in srgb,
+    var(--custom-primary-color) 80%,
+    black
+  );
+
+  /* --- LIGHT MODE BODY/SURFACE STYLES --- */
+  --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #212529; /* Dark text */
+  --bs-body-bg: #f8f9fa; /* Light gray background */
+  --bs-tertiary-bg: #ffffff; /* e.g., Card background */
+  --bs-secondary-color: rgba(33, 37, 41, 0.75); /* Muted text */
+  --bs-border-color: #dee2e6;
+  /* ------------------------------------ */
+
+  --custom-navbar-bg: var(--custom-primary-color);
+}
+
+/* Dark Theme Overrides */
+[data-bs-theme="dark"] {
+  /* Re-declare base color if needed */
+  --custom-primary-color: #6c5ce7;
+  --custom-navbar-color: #e9ecef; /* Light text for dark navbar */
+
+  /* Bootstrap variable overrides for dark mode */
+  --bs-primary: color-mix(
+    in srgb,
+    var(--custom-primary-color) 85%,
+    white
+  ); /* Lighter primary */
+  --bs-secondary: #adb5bd; /* Lighter secondary */
+  --bs-light: #343a40; /* Darker light */
+  --bs-dark: #dee2e6; /* Lighter dark */
+  --bs-link-color: var(--bs-primary);
+  --bs-link-hover-color: color-mix(in srgb, var(--bs-primary) 80%, white);
+
+  /* --- DARK MODE BODY/SURFACE STYLES --- */
+  --bs-body-color: #dee2e6; /* Light text */
+  --bs-body-bg: #212529; /* Dark background */
+  --bs-tertiary-bg: #343a40; /* Darker surface background */
+  --bs-secondary-color: rgba(222, 226, 230, 0.75); /* Lighter muted text */
+  --bs-border-color: #495057;
+  /* ----------------------------------- */
+
+  /* Component specific overrides */
+  --bs-card-bg: var(--bs-tertiary-bg);
+  --bs-card-color: var(--bs-body-color);
+  --bs-card-border-color: var(--bs-border-color);
+  --bs-modal-bg: var(--bs-tertiary-bg);
+  --bs-modal-color: var(--bs-body-color);
+  --bs-modal-header-border-color: var(--bs-border-color);
+  --bs-modal-footer-border-color: var(--bs-border-color);
+  --bs-form-control-bg: var(--bs-tertiary-bg);
+  --bs-form-control-color: var(--bs-body-color);
+  --bs-form-control-border-color: var(--bs-border-color);
+  --bs-form-select-bg: var(--bs-form-control-bg);
+  --bs-form-select-color: var(--bs-form-control-color);
+  --bs-form-select-border-color: var(--bs-form-control-border-color);
+
+  /* Navbar Specific Dark Theme Overrides */
+  --custom-navbar-bg: color-mix(
+    in srgb,
+    var(--custom-primary-color) 85%,
+    black
+  );
+
+  /* Dark Button Overrides */
+  --bs-btn-color: var(--custom-navbar-bg); /* Text color for btn-light */
+  --bs-btn-bg: var(--bs-dark); /* Use the lighter dark color for bg */
+  --bs-btn-border-color: var(--bs-dark);
+  --bs-btn-hover-color: var(--custom-navbar-bg);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--bs-dark) 90%, black);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--bs-dark) 90%, black);
+
+  .card .bi-person-video3,
+  .card .bi-mic-fill,
+  .card .bi-camera-reels-fill {
+    fill: var(--custom-primary-color); /* Use the adjusted dark primary */
+  }
+
+  /* Ensure theme toggle button outline adapts */
+  .btn-theme-toggle {
+    border-color: var(--custom-navbar-color);
+    color: var(--custom-navbar-color);
+  }
+}
+
+/* --- Explicit Body Styling --- */
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  /* Apply other base body styles using variables */
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  /* Add transition for smooth theme change */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+/* --- End Explicit Body Styling --- */
+
+/* --- General Navbar Styling --- */
+.navbar.navbar-dark {
+  background-color: var(
+    --custom-navbar-bg
+  ) !important; /* Keep !important for now */
+  transition: background-color 0.3s ease;
+}
+.navbar-dark .navbar-brand,
+.navbar-dark .nav-link {
+  color: var(--custom-navbar-color) !important;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+.navbar-dark .navbar-toggler {
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-dark .nav-link:hover,
+.navbar-dark .navbar-brand:hover {
+  opacity: 1;
+  color: var(--custom-navbar-color) !important;
+}
+.navbar-dark .nav-link.active {
+  font-weight: 600;
+  opacity: 1;
+  color: var(--custom-navbar-color) !important;
+}
+
+/* Style for the theme toggle button */
+.btn-theme-toggle {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  border-color: var(--custom-navbar-color);
+  color: var(--custom-navbar-color);
+  opacity: 0.9;
+  transition: opacity 0.2s ease, background-color 0.2s ease; /* Add transition */
+}
+.btn-theme-toggle:hover {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.btn-theme-toggle svg {
+  margin: auto;
+}
+
+/* Ensure card icons use the adaptable primary color */
+.card .bi-person-video3,
+.card .bi-mic-fill,
+.card .bi-camera-reels-fill {
+  fill: var(--custom-primary-color);
+}
+
+/* --- Animation Styles (Keep from animations.css or merge here) --- */
+.btn-animated {
+  transition: transform 0.2s ease-out, background-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out,
+    color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  will-change: transform, background-color, box-shadow, border-color, color,
+    opacity;
+}
+.btn-animated:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.btn-animated:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* ... other animation styles ... */
+
+/* src/Theme.css OR src/ChatPage.css */
+
+/* Main Layout Container */
+.chat-page-layout {
+  display: flex;
+  gap: 1.5rem; /* Space between sidebar and main content */
+  height: calc(
+    100vh - 150px
+  ); /* Example: Adjust based on navbar/footer height */
+  min-height: 500px; /* Ensure a minimum usable height */
+}
+
+/* Avatar Sidebar Styling */
+.avatar-sidebar {
+  flex: 0 0 280px; /* Fixed width, don't grow or shrink */
+  border-right: 1px solid var(--bs-border-color); /* Separator line */
+  padding-right: 1rem; /* Space before the line */
+  overflow-y: auto; /* Allow scrolling if list is long */
+  display: flex;
+  flex-direction: column;
+}
+.avatar-sidebar h5 {
+  margin-bottom: 0.75rem; /* Space below title */
+}
+
+/* Avatar List Styling */
+.avatar-list {
+  /* list-unstyled removes bullets/padding */
+  flex-grow: 1; /* Allow list to take remaining space */
+  overflow-y: auto; /* Scroll list independently if needed */
+}
+.avatar-list-item {
+  border: none; /* Remove default button border */
+  background: none; /* Remove default button background */
+  border-radius: 0.375rem; /* Standard Bootstrap border radius */
+  margin-bottom: 0.25rem; /* Space between items */
+  transition: background-color 0.15s ease-in-out;
+  color: var(--bs-body-color) !important; /* Ensure text color adapts */
+}
+.avatar-list-item:hover {
+  background-color: var(--bs-tertiary-bg); /* Use theme tertiary bg for hover */
+}
+.avatar-list-item.active {
+  background-color: var(
+    --bs-primary-bg-subtle
+  ); /* Bootstrap subtle primary for active */
+  font-weight: 500;
+  color: var(--bs-primary) !important; /* Use primary color for active text */
+}
+.avatar-list-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Make preview circular */
+  object-fit: cover; /* Ensure image covers the area */
+  margin-right: 0.75rem; /* Space between image and name */
+  border: 1px solid var(--bs-border-color); /* Subtle border */
+}
+.avatar-list-item .avatar-placeholder-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--bs-secondary-color); /* Muted color for placeholder */
+  margin-right: 0.75rem;
+  opacity: 0.6;
+}
+
+/* Main Content Area */
+.chat-main-content {
+  flex-grow: 1; /* Take remaining width */
+  display: flex;
+  gap: 1.5rem; /* Space between video and chat columns */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+/* Video Column */
+.chat-video-column {
+  flex: 1 1 60%; /* Flexible width, default 60% */
+  min-width: 300px; /* Prevent getting too small */
+  display: flex; /* Allow card to stretch */
+}
+.chat-video-column .card {
+  width: 100%; /* Ensure card takes full width */
+}
+.chat-video-column video {
+  max-width: 100%; /* Ensure video doesn't overflow */
+}
+
+/* Chat Column */
+.chat-column {
+  flex: 1 1 40%; /* Flexible width, default 40% */
+  min-width: 280px; /* Prevent getting too small */
+  display: flex; /* Allow card to stretch */
+}
+.chat-column .card {
+  width: 100%; /* Ensure card takes full width */
+}
+
+/* Responsive adjustments (Example for medium screens and below) */
+@media (max-width: 991.98px) {
+  .chat-page-layout {
+    flex-direction: column; /* Stack sidebar and main content */
+    height: auto; /* Auto height on smaller screens */
+  }
+  .avatar-sidebar {
+    flex: 0 0 auto; /* Don't fix height/width */
+    border-right: none;
+    border-bottom: 1px solid var(--bs-border-color); /* Separator below */
+    padding-right: 0;
+    padding-bottom: 1rem;
+    max-height: 250px; /* Limit height when stacked */
+  }
+  .chat-main-content {
+    flex-direction: column; /* Stack video and chat */
+    overflow: visible;
+  }
+  .chat-video-column,
+  .chat-column {
+    min-width: 100%;
+    flex-basis: auto; /* Reset flex basis */
+  }
+  .chat-column .card {
+    /* Adjust height or let it be content-based */
+    min-height: 400px;
+  }
+}
+
+/* --- General Button Hover/Active --- */
+.btn-animated {
+  transition: transform 0.2s ease-out, background-color 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  will-change: transform; /* Hint for browser optimization */
+}
+
+.btn-animated:hover {
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-animated:active {
+  transform: translateY(0px); /* Push down on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Navbar Link Hover/Active --- */
+.nav-link-animated {
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out,
+    transform 0.15s ease-out;
+  border-radius: 4px; /* Optional: nice touch for background hover */
+  padding: 0.5rem 0.8rem; /* Ensure padding for background */
+  margin: 0 0.2rem; /* Add some spacing */
+  will-change: transform;
+}
+
+.nav-link-animated:hover {
+  /* background-color: rgba(255, 255, 255, 0.1); Slightly lighter background on hover */
+  color: #0d6efd; /* Brighter color on hover - adjust as needed */
+  transform: scale(1.05);
+}
+
+.nav-link-animated.active {
+  font-weight: bold;
+  color: #0a58ca; /* Example active color */
+  /* background-color: rgba(255, 255, 255, 0.15); */
+  /* You might want a different style for active */
+}
+
+/* --- Page Transition --- */
+/* Fade Transition */
+.page-fade-enter {
+  opacity: 0;
+  transform: scale(0.98);
+}
+.page-fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+.page-fade-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.page-fade-exit-active {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+}
+
+/* --- Modal Transition --- */
+/* Fade and Scale */
+.modal-fade-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.modal-fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+.modal-fade-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-fade-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 200ms ease-in, transform 200ms ease-in;
+}
+
+/* Optional: Add overlay fade */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040; /* Below modal (Bootstrap default is 1050 for modal) */
+}
+
+.modal-overlay-fade-enter {
+  opacity: 0;
+}
+.modal-overlay-fade-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-out;
+}
+.modal-overlay-fade-exit {
+  opacity: 1;
+}
+.modal-overlay-fade-exit-active {
+  opacity: 0;
+  transition: opacity 200ms ease-in;
+}
+
+/* src/Theme.css OR src/ChatPage.css */
+
+/* Main Layout Container */
+.chat-page-layout {
+  display: flex;
+  gap: 1.5rem; /* Space between sidebar and main content */
+  height: calc(
+    100vh - 150px
+  ); /* Example: Adjust based on navbar/footer height */
+  min-height: 500px; /* Ensure a minimum usable height */
+}
+
+/* Avatar Sidebar Styling */
+.avatar-sidebar {
+  flex: 0 0 280px; /* Fixed width, don't grow or shrink */
+  border-right: 1px solid var(--bs-border-color); /* Separator line */
+  padding-right: 1rem; /* Space before the line */
+  overflow-y: auto; /* Allow scrolling if list is long */
+  display: flex;
+  flex-direction: column;
+}
+.avatar-sidebar h5 {
+  margin-bottom: 0.75rem; /* Space below title */
+}
+
+/* Avatar List Styling */
+.avatar-list {
+  /* list-unstyled removes bullets/padding */
+  flex-grow: 1; /* Allow list to take remaining space */
+  overflow-y: auto; /* Scroll list independently if needed */
+}
+.avatar-list-item {
+  border: none; /* Remove default button border */
+  background: none; /* Remove default button background */
+  border-radius: 0.375rem; /* Standard Bootstrap border radius */
+  margin-bottom: 0.25rem; /* Space between items */
+  transition: background-color 0.15s ease-in-out;
+  color: var(--bs-body-color) !important; /* Ensure text color adapts */
+}
+.avatar-list-item:hover {
+  background-color: var(--bs-tertiary-bg); /* Use theme tertiary bg for hover */
+}
+.avatar-list-item.active {
+  background-color: var(
+    --bs-primary-bg-subtle
+  ); /* Bootstrap subtle primary for active */
+  font-weight: 500;
+  color: var(--bs-primary) !important; /* Use primary color for active text */
+}
+.avatar-list-item img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Make preview circular */
+  object-fit: cover; /* Ensure image covers the area */
+  margin-right: 0.75rem; /* Space between image and name */
+  border: 1px solid var(--bs-border-color); /* Subtle border */
+}
+.avatar-list-item .avatar-placeholder-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--bs-secondary-color); /* Muted color for placeholder */
+  margin-right: 0.75rem;
+  opacity: 0.6;
+}
+
+/* Main Content Area */
+.chat-main-content {
+  flex-grow: 1; /* Take remaining width */
+  display: flex;
+  gap: 1.5rem; /* Space between video and chat columns */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+/* Video Column */
+.chat-video-column {
+  flex: 1 1 60%; /* Flexible width, default 60% */
+  min-width: 300px; /* Prevent getting too small */
+  display: flex; /* Allow card to stretch */
+}
+.chat-video-column .card {
+  width: 100%; /* Ensure card takes full width */
+}
+.chat-video-column video {
+  max-width: 100%; /* Ensure video doesn't overflow */
+}
+
+/* Chat Column */
+.chat-column {
+  flex: 1 1 40%; /* Flexible width, default 40% */
+  min-width: 280px; /* Prevent getting too small */
+  display: flex; /* Allow card to stretch */
+}
+.chat-column .card {
+  width: 100%; /* Ensure card takes full width */
+}
+
+/* Responsive adjustments (Example for medium screens and below) */
+@media (max-width: 991.98px) {
+  .chat-page-layout {
+    flex-direction: column; /* Stack sidebar and main content */
+    height: auto; /* Auto height on smaller screens */
+  }
+  .avatar-sidebar {
+    flex: 0 0 auto; /* Don't fix height/width */
+    border-right: none;
+    border-bottom: 1px solid var(--bs-border-color); /* Separator below */
+    padding-right: 0;
+    padding-bottom: 1rem;
+    max-height: 250px; /* Limit height when stacked */
+  }
+  .chat-main-content {
+    flex-direction: column; /* Stack video and chat */
+    overflow: visible;
+  }
+  .chat-video-column,
+  .chat-column {
+    min-width: 100%;
+    flex-basis: auto; /* Reset flex basis */
+  }
+  .chat-column .card {
+    /* Adjust height or let it be content-based */
+    min-height: 400px;
+  }
+}

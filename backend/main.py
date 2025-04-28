@@ -17,6 +17,11 @@ from utilty import generate_flux_prompt,gen_name,tts
 from fastapi.security import OAuth2PasswordRequestForm
 from form_schema import UserCreate,videogenForm,AvatargenForm
 from fastapi import FastAPI,Depends, HTTPException, status, Form
+from dotenv import load_dotenv
+from typing import List
+
+load_dotenv()
+
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
@@ -136,7 +141,7 @@ async def avatar_gen(
             ExpiresIn=180
         )
 
-        return JSONResponse({f"{avatar_name}":url})
+        return JSONResponse({f"image_url":url})
 		
     except HTTPException as e:
         raise e  # Let FastAPI handle known auth errors
@@ -215,7 +220,7 @@ async def video_gen(
         os.remove('output.wav')
         os.remove(f'{avatar}.webp')
         os.remove('src_audio.wav')
-        return JSONResponse(content={"message": f"Video generated at {url}"})
+        return JSONResponse(content={"video_url": url})
     
     except HTTPException as e:
         raise e  # Let FastAPI handle known auth errors
@@ -319,3 +324,47 @@ async def get_videos(avatar_name = Query(),current_user=Depends(get_current_user
     except Exception as e:
         print("[TTS Error]", traceback.format_exc())
         raise HTTPException(status_code=500, detail="Couldn't retrieve videos.")
+    
+
+from typing import List
+
+@app.get('/user_avatars', response_model=List[dict])
+async def get_user_avatars(current_user=Depends(get_current_user)):
+    try:
+        if not current_user.fine_tuned:
+            return JSONResponse(content={"Error": "Your model hasn't been fine-tuned yet."})
+        
+        user = current_user.username
+        response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=f'Avatars/{user}')
+        
+        if 'Contents' not in response:
+            return JSONResponse(content={"error": "You don't have any avatars yet."})
+        
+        avatars = []
+        
+        for obj in response['Contents']:
+            key = obj['Key']
+            if key.endswith('.webp'):
+                avatar_name = key.split('/')[-1].split('.')[0]
+                
+                url = s3.generate_presigned_url(
+                    'get_object',
+                    Params={
+                        'Bucket': BUCKET_NAME,
+                        'Key': key
+                    },
+                    ExpiresIn=180
+                )
+                
+                avatars.append({
+                    "avatar_name": avatar_name,
+                    "preview_url": url
+                })
+
+        return avatars
+
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        print("[User Avatars Error]", traceback.format_exc())
+        raise HTTPException(status_code=500, detail="Couldn't retrieve avatars.")

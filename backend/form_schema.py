@@ -16,6 +16,7 @@ class AvatargenForm(BaseModel):
     accessories: Literal['none', 'glasses', 'hat', 'earrings', 'headphones', 'necklace']
     dressing: Literal['casual', 'formal', 'streetwear', 'traditional', 'sportswear']
     expression_description: Literal['relaxed face','smiling naturally','confident look', 'surprised expression']
+    
 
 class UserCreate(BaseModel):
     username: str
