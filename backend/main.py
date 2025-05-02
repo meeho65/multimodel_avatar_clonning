@@ -31,11 +31,15 @@ BUCKET_NAME = os.environ['BUCKET_NAME']
 # Optional: Add CORS if calling from frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Use specific origin(s) in production
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 # ------------- Auth Endpoints -------------
@@ -255,37 +259,40 @@ async def get_avatars(current_user=Depends(get_current_user)):
 async def get_avatars_with_images(current_user=Depends(get_current_user)):
     try:
         if not current_user.fine_tuned:
-            return JSONResponse(content={"Error":"Your model hasn't been fine-tuned yet."})
+            return JSONResponse(content={"error": "Your model hasn't been fine-tuned yet."})
         
         user = current_user.username
-        response = s3.list_objects_v2(Bucket=BUCKET_NAME,Prefix=f'Avatars/{user}')
+        response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=f'Avatars/{user}/')
+        
         if 'Contents' not in response:
-            return JSONResponse({'error':f"You don't have any avatars"})
+            return JSONResponse(content={"error": "You don't have any avatars."})
         
-        avatar_paths=[]
-        for object in response['Contents']:
-            avatar_paths.append(object['Key'])
-        
-        data = {}
-        for avatar_path in avatar_paths:
-            key = avatar_path.split('/')[-1].split('.')[0]
-            url = s3.generate_presigned_url(
-                'get_object',
-                {
-                    'Bucket':BUCKET_NAME,
-                    'Key':avatar_path
-                },
-                ExpiresIn=180
-            )
-            data[key] = url
+        avatar_data = []
 
-        return JSONResponse(data)
-    
+        for obj in response['Contents']:
+            key = obj['Key']
+            if key.endswith('.webp'):  # Only include avatar image files
+                avatar_name = key.split('/')[-1].split('.')[0]
+                url = s3.generate_presigned_url(
+                    'get_object',
+                    Params={
+                        'Bucket': BUCKET_NAME,
+                        'Key': key
+                    },
+                    ExpiresIn=180
+                )
+                avatar_data.append({
+                    "name": avatar_name,
+                    "image_url": url
+                })
+
+        return JSONResponse(content={"avatars": avatar_data})
+
     except HTTPException as e:
-        raise e  # Let FastAPI handle known auth errors
+        raise e
     except Exception as e:
-        print("[TTS Error]", traceback.format_exc())
-        raise HTTPException(status_code=500, detail="Couldn't retrieve all avatars")
+        print("[Avatar Image Fetch Error]", traceback.format_exc())
+        raise HTTPException(status_code=500, detail="Couldn't retrieve avatars with images.")
 
 @app.get('/get_videos')
 async def get_videos(avatar_name = Query(),current_user=Depends(get_current_user)):

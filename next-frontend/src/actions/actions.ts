@@ -28,7 +28,7 @@ export const register = async (
     const formData = new FormData();
     formData.append("username", username);
     formData.append("email", email);
-    formData.append("fine_tune", "0");
+    formData.append("fine_tuned", "false"); 
     formData.append("password", password);
     formData.append("model_version_id", "");
     photos.forEach((photo) => {
@@ -38,8 +38,9 @@ export const register = async (
       headers: { "Content-Type": "multipart/form-data" }, //
     });
     return response.data;
-  } catch (error) {
+  }catch (error) {
     if (axios.isAxiosError(error)) {
+      console.error("Signup error:", error.response?.data);
       throw error.response?.data || new Error("Failed to Register");
     }
     throw error;
@@ -57,6 +58,42 @@ export const getUserAvatars = async (accessToken: string) => {
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw error.response?.data || new Error("Failed to Login");
+    }
+    throw error;
+  }
+};
+
+export const getHistory = async (accessToken: string) => {
+  try {
+    const response = await axiosInstance.get(`/get_avatars_with_images`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to Login");
+    }
+    throw error;
+  }
+};
+
+
+export const getVideos = async (accessToken: string, name: string) => {
+  try {
+    const response = await axiosInstance.get(`/get_videos`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        avatar_name: name,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error.response?.data || new Error("Failed to fetch videos");
     }
     throw error;
   }
@@ -126,3 +163,5 @@ export const generateVideo = async (
     throw error;
   }
 };
+
+
